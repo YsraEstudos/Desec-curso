@@ -1,0 +1,749 @@
+--- START OF FILE TESTE4 - Copia (2).html ---
+
+--- START OF FILE TESTE4 - Copia (2).html ---
+
+--- START OF FILE TESTE4 - Copia (2).html ---
+
+--- START OF FILE TESTE4 - Copia (2).html ---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresso do Curso - Pentest Profissional DESEC 2023</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #181818;
+            color: #f0f0f0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+        }
+
+        h1, h2 {
+            color: #ddd;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav button {
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        nav button:hover {
+            background-color: #777;
+        }
+
+        .page {
+            width: 95%;
+            max-width: 1200px;
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #222;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .section-container {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #333;
+        }
+
+        .hashtag-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .hashtag {
+            background-color: #444;
+            border: 1px solid #666;
+            padding: 10px 15px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+        .hashtag:hover {
+            background-color: #666;
+        }
+
+        .hashtag.completed {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: #fff;
+            text-decoration: line-through;
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background-color: #555;
+            border-radius: 5px;
+            height: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-color: #00bcd4;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 25px;
+            color: #181818;
+            font-weight: bold;
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #777;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            background-color: #444;
+            color: #f0f0f0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #calculation {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+            white-space: pre-line; /* To respect line breaks */
+        }
+
+        /* Styles for the revision page */
+        #revisionsTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #revisionsTable th, #revisionsTable td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #revisionsTable th {
+            background-color: #444;
+        }
+
+        #revisionsTable input[type="checkbox"] {
+            margin: 0;
+        }
+
+        /* Styles for the future studies page */
+        #futureStudiesTextarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #777;
+            background-color: #444;
+            color: #f0f0f0;
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Mobile Menu Button */
+        #menuButton {
+            display: none;
+            background-color: #555;
+            color: #f0f0f0;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Media query for mobile view */
+        @media (max-width: 768px) {
+            nav {
+                display: none; /* Hide the regular nav */
+            }
+            #menuButton {
+                display: block; /* Show the menu button */
+            }
+            .mobile-nav {
+                display: flex; /* Show the mobile nav when menu is open */
+            }
+            .page {
+                padding: 10px;
+            }
+            .hashtag-container {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+        }
+
+        .zimatise-info {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        /* Styles for the notes page */
+        #notesTextarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #777;
+            background-color: #444;
+            color: #f0f0f0;
+            height: 300px;
+            resize: vertical;
+        }
+
+        /* Styles for weekly study hours */
+        .weekly-study-container {
+            margin-top: 20px;
+            background-color: #333;
+            padding: 15px;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .weekly-study-container h3 {
+            margin-top: 0;
+            color: #ddd;
+        }
+
+        #weeklyHoursInput {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+        }
+
+        #weeklyStudyHoursTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #weeklyStudyHoursTable th, #weeklyStudyHoursTable td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #weeklyStudyHoursTable th {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Progresso do Curso - Pentest Profissional DESEC 2023</h1>
+
+    <button id="menuButton">Ver Menu</button>
+    <nav class="mobile-nav">
+        <button onclick="showPage('main')">Progresso</button>
+        <button onclick="showPage('revisions')">Revisões</button>
+        <button onclick="showPage('future')">Estudos Futuros</button>
+        <button onclick="showPage('notes')">Anotações</button>
+        <button id="goToNext">Próximo Incompleto</button>
+    </nav>
+
+    <nav class="desktop-nav">
+        <button onclick="showPage('main')">Progresso</button>
+        <button onclick="showPage('revisions')">Revisões</button>
+        <button onclick="showPage('future')">Estudos Futuros</button>
+        <button onclick="showPage('notes')">Anotações</button>
+        <button id="goToNextDesktop">Próximo Incompleto</button>
+    </nav>
+
+    <div id="mainPage" class="page active">
+        <label for="totalHours">Carga Horária Total do Curso:</label>
+        <input type="number" id="totalHours" placeholder="Ex: 40">
+
+        <label for="plannedWeeklyHours">Horas Semanais Planejadas:</label>
+        <input type="number" id="plannedWeeklyHours" placeholder="Ex: 5">
+
+        <button onclick="calculateCompletion()">Calcular Término</button>
+
+        <div id="calculation"></div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBarFill">0%</div>
+            </div>
+        </div>
+
+        <div class="weekly-study-container">
+            <h3>Registro de Horas de Estudo Semanais</h3>
+            <label for="weeklyHoursInput">Horas Estudadas Esta Semana:</label>
+            <input type="number" id="weeklyHoursInput" placeholder="Ex: 6">
+            <button onclick="saveWeeklyStudyHours()">Salvar Horas Semanais</button>
+
+            <table id="weeklyStudyHoursTable">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Horas Estudadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Weekly study hours will be added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="sectionsContainer">
+            <!-- Sections and hashtags will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <div id="revisionsPage" class="page">
+        <h2>Planejamento de Revisões</h2>
+        <table id="revisionsTable">
+            <thead>
+                <tr>
+                    <th>Matéria/Fonte</th>
+                    <th>Conteúdo Programático</th>
+                    <th>Visto</th>
+                    <th>Revisão Dia 1</th>
+                    <th>Revisão Dia 7</th>
+                    <th>Revisão Dia 15</th>
+                    <th>Revisão Dia 30</th>
+                    <th>Revisão Dia 60</th>
+                    <th>Revisão Dia 90</th>
+                    <th>Revisão Dia 120</th>
+                    <th>Revisão Dia 150</th>
+                    <th>Revisão Dia 180</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Revision rows will be added here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="futureStudiesPage" class="page">
+        <h2>Próximos Estudos</h2>
+        <label for="futureStudiesTextarea">O que você planeja estudar mais para frente?</label>
+        <textarea id="futureStudiesTextarea"></textarea>
+    </div>
+
+    <div id="notesPage" class="page">
+        <h2>Anotações</h2>
+        <label for="notesTextarea">Suas anotações:</label>
+        <textarea id="notesTextarea"></textarea>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="zimatise-info">
+        <p>Via Zimatise</p>
+        <p>Material disponibilizado gratuitamente</p>
+        <p>Se você precisou pagar para chegar até aqui, VOCÊ FOI ENGANADO.</p>
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const desktopNav = document.querySelector('.desktop-nav');
+        const mainPage = document.getElementById('mainPage');
+        const revisionsPage = document.getElementById('revisionsPage');
+        const futureStudiesPage = document.getElementById('futureStudiesPage');
+        const notesPage = document.getElementById('notesPage');
+        const sectionsContainer = document.getElementById('sectionsContainer');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const confettiContainer = document.getElementById('confettiContainer');
+        const calculationDiv = document.getElementById('calculation');
+        const totalHoursInput = document.getElementById('totalHours');
+        const plannedWeeklyHoursInput = document.getElementById('plannedWeeklyHours');
+        const revisionsTableBody = document.getElementById('revisionsTable').querySelector('tbody');
+        const futureStudiesTextarea = document.getElementById('futureStudiesTextarea');
+        const notesTextarea = document.getElementById('notesTextarea');
+        const goToNextButton = document.getElementById('goToNext');
+        const goToNextDesktopButton = document.getElementById('goToNextDesktop');
+        const weeklyHoursInput = document.getElementById('weeklyHoursInput');
+        const weeklyStudyHoursTableBody = document.getElementById('weeklyStudyHoursTable').querySelector('tbody');
+
+        const LS_COMPLETED_HASHTAGS_KEY = 'completedHashtags';
+        const LS_REVISIONS_DATA_KEY = 'revisionsData';
+        const LS_FUTURE_STUDIES_KEY = 'futureStudies';
+        const LS_NOTES_KEY = 'notes';
+        const LS_TOTAL_HOURS_KEY = 'totalHours';
+        const LS_PLANNED_WEEKLY_HOURS_KEY = 'plannedWeeklyHours';
+        const LS_WEEKLY_STUDY_HOURS_KEY = 'weeklyStudyHours';
+
+        const courseData = {
+            "1. avisos legais": { content: "Informações legais importantes", hashtags: ["#F001", "#F002"] },
+            "2. apresentação": { content: "Apresentação do curso e do instrutor", hashtags: ["#F003", "#F004", "#F005", "#F006", "#F007", "#F008", "#F009"] },
+            "3. introdução a segurança da informação": { content: "Conceitos básicos de segurança da informação", hashtags: ["#F010", "#F011", "#F012", "#F013", "#F014", "#F015", "#F016", "#F017"] },
+            "4. introdução ao penetration testing": { content: "O que é penetration testing e suas etapas", hashtags: ["#F018", "#F019", "#F020", "#F021", "#F022", "#F023", "#F024", "#F025"] },
+            "5. Carreira em Pentest": { content: "Caminhos e oportunidades na área de pentest", hashtags: ["#F026", "#F027", "#F028", "#F029"] },
+            "6. virtualização e sistemas operacionais": { content: "Configuração de ambientes virtuais para testes", hashtags: ["#F030", "#F031", "#F032", "#F033"] },
+            "7. Dominando o terminal linux": { content: "Comandos essenciais do Linux para pentesters", hashtags: ["#F034", "#F035", "#F036", "#F037", "#F038", "#F039", "#F040", "#F041", "#F042", "#F043"] },
+            "8. Dominando o prompt do Windows": { content: "Comandos essenciais do Windows para pentesters", hashtags: ["#F044", "#F045"] },
+            "9. Visão geral sobre WEB e HTTP": { content: "Fundamentos da web e protocolo HTTP", hashtags: ["#F046", "#F047", "#F048"] },
+            "10. Analise de Logs": { content: "Interpretação de logs de sistemas e aplicações", hashtags: ["#F049"] },
+            "11. TCP IP para Pentersters": { content: "Protocolo TCP/IP em detalhes para testes de segurança", hashtags: ["#F050", "#F051", "#F052", "#F053", "#F054", "#F055", "#F056", "#F057", "#F058", "#F059", "#F060", "#F061", "#F062", "#F063", "#F064", "#F065", "#F066", "#F067", "#F068", "#F069", "#F070", "#F071", "#F072", "#F073", "#F074", "#F075"] },
+            "12. Analisadores de Protocolo": { content: "Uso de ferramentas como Wireshark para análise de tráfego", hashtags: ["#F076", "#F077", "#F078", "#F079", "#F080", "#F081"] },
+            "13. Bash Scripting (Linux)": { content: "Automação de tarefas com scripts Bash", hashtags: ["#F082", "#F083", "#F084", "#F085", "#F086", "#F087", "#F088"] },
+            "14. PowerShell para Pentesters": { content: "Automação de tarefas com PowerShell no Windows", hashtags: ["#F089", "#F090", "#F091", "#F092", "#F093"] },
+            "15. Linguagem C para Pentesters": { content: "Conceitos de C importantes para análise de exploits", hashtags: ["#F094", "#F095", "#F096", "#F097", "#F098", "#F099", "#F100", "#F101", "#F102", "#F103", "#F104"] },
+            "16. Python para Pentesters": { content: "Desenvolvimento de ferramentas e scripts em Python", hashtags: ["#F105", "#F106", "#F107", "#F108", "#F109", "#F110", "#F111", "#F112", "#F113"] },
+            "17. Swiss Army Knife": { content: "Utilização da ferramenta Netcat", hashtags: ["#F114", "#F115", "#F116", "#F117", "#F118", "#F119", "#F120", "#F121", "#F122", "#F123", "#F124", "#F125", "#F126", "#F127", "#F128", "#F129", "#F130", "#F131", "#F132"] },
+            "18. Information Gathering": { content: "Técnicas de coleta de informações sobre alvos", hashtags: ["#F133", "#F134", "#F135", "#F136", "#F137", "#F138", "#F139", "#F140", "#F141", "#F142", "#F143", "#F144", "#F145", "#F146", "#F147", "#F148", "#F149", "#F150", "#F151", "#F152", "#F153", "#F154"] },
+            "19. Information Gathering - INFRA": { content: "Coleta de informações sobre infraestrutura de redes", hashtags: ["#F155", "#F156", "#F157", "#F158", "#F159", "#F160", "#F161", "#F162", "#F163", "#F164", "#F165", "#F166", "#F167", "#F168", "#F169", "#F170", "#F171", "#F172", "#F173", "#F174", "#F175", "#F176", "#F177"] },
+            "20. Information Gathering - WEB": { content: "Coleta de informações sobre aplicações web", hashtags: ["#F178", "#F179", "#F180", "#F181", "#F182", "#F183", "#F184", "#F185", "#F186", "#F187", "#F188", "#F189", "#F190"] },
+            "21. scanning": { content: "Utilização de Nmap para descoberta de hosts e serviços", hashtags: ["#F191", "#F192", "#F193", "#F194", "#F195", "#F196", "#F197", "#F198", "#F199", "#F200", "#F201", "#F202", "#F203", "#F204", "#F205", "#F206", "#F207", "#F208", "#F209", "#F210"] },
+            "22. Burlando Mecanismos de Defesa": { content: "Técnicas para evitar firewalls e IDS", hashtags: ["#F211", "#F212", "#F213", "#F214", "#F215", "#F216", "#F217"] },
+            "23. trabalhando com scapy": { content: "Criação e manipulação de pacotes de rede", hashtags: ["#F218", "#F219", "#F220", "#F221", "#F222"] },
+            "24. enumeração": { content: "Coleta de informações detalhadas sobre sistemas", hashtags: ["#F223", "#F224", "#F225", "#F226", "#F227", "#F228", "#F229", "#F230", "#F231", "#F232", "#F233", "#F234", "#F235", "#F236", "#F237", "#F238", "#F239", "#F240", "#F241", "#F242", "#F243", "#F244", "#F245", "#F246", "#F247", "#F248"] },
+            "25. analise de vulnerabilidade": { content: "Identificação de falhas de segurança em sistemas", hashtags: ["#F249", "#F250", "#F251", "#F252", "#F253", "#F254", "#F255", "#F256", "#F257", "#F258", "#F259", "#F260", "#F261", "#F262", "#F263", "#F264", "#F265", "#F266"] },
+            "26. Metasploit Framework": { content: "Utilização do Metasploit para exploração", hashtags: ["#F267", "#F268", "#F269", "#F270", "#F271", "#F272", "#F273", "#F274", "#F275", "#F276", "#F277", "#F278", "#F279"] },
+            "27. Hashes e senhas - linux": { content: "Quebra e gerenciamento de senhas no Linux", hashtags: ["#F280", "#F281", "#F282", "#F283", "#F284", "#F285", "#F286", "#F287", "#F288", "#F289", "#F290", "#F291", "#F292", "#F293"] },
+            "28. Hashes e senhas - windows": { content: "Quebra e gerenciamento de senhas no Windows", hashtags: ["#F294", "#F295", "#F296", "#F297", "#F298", "#F299", "#F300", "#F301", "#F302", "#F303", "#F304", "#F305"] },
+            "29. Pentest Interno - Do zero a domain admin": { content: "Técnicas de escalada de privilégios em redes Windows", hashtags: ["#F306", "#F307", "#F308", "#F309", "#F310", "#F311", "#F312", "#F313", "#F314"] },
+            "30. Brute force ataques em senhas": { content: "Ataques de força bruta e dicionário contra senhas", hashtags: ["#F315", "#F316", "#F317", "#F318", "#F319", "#F320", "#F321", "#F322", "#F323", "#F324", "#F325", "#F326", "#F327"] },
+            "31. DEV Exploitation Assembly para pentesters - windows": { content: "Conceitos de Assembly para análise de exploits no Windows", hashtags: ["#F328", "#F329", "#F330", "#F331", "#F332", "#F333", "#F334", "#F335", "#F336", "#F337", "#F338", "#F339"] },
+            "32. Dev Exploitation Assembly para Pentesters - linux": { content: "Conceitos de Assembly para análise de exploits no Linux", hashtags: ["#F340", "#F341", "#F342", "#F343", "#F344", "#F345", "#F346"] },
+            "33. Buffer Overflow para Pentesters Windows 10": { content: "Exploração de vulnerabilidades de buffer overflow no Windows 10", hashtags: ["#F347", "#F348", "#F349", "#F350", "#F351", "#F352", "#F353", "#F354", "#F355", "#F356", "#F357", "#F358", "#F359", "#F360", "#F361", "#F362"] },
+            "34. Desenvolvimento de Exploit - Windows 10": { content: "Desenvolvimento de exploits para Windows 10", hashtags: ["#F363", "#F364", "#F365", "#F366", "#F367", "#F368", "#F369", "#F370", "#F371", "#F372", "#F373"] },
+            "35. mecanismos de proteção DEP e ASLR": { content: "Como funcionam e como burlar DEP e ASLR", hashtags: ["#F374", "#F375", "#F376"] },
+            "36. buffer overflow - linux": { content: "Exploração de vulnerabilidades de buffer overflow no Linux", hashtags: ["#F377", "#F378", "#F379", "#F380", "#F381"] },
+            "37. trabalhando com exploits publicos": { content: "Utilização e adaptação de exploits públicos", hashtags: ["#F382", "#F383", "#F384", "#F385", "#F386", "#F387", "#F388"] },
+            "38. pentenst web - web hacking": { content: "Principais vulnerabilidades em aplicações web", hashtags: ["#F389", "#F390", "#F391", "#F392", "#F393", "#F394", "#F395", "#F396", "#F397", "#F398", "#F399", "#F400", "#F401", "#F402", "#F403", "#F404", "#F405", "#F406", "#F407", "#F408", "#F409", "#F410", "#F411", "#F412", "#F413", "#F414", "#F415", "#F416", "#F417", "#F418", "#F419", "#F420", "#F421", "#F422", "#F423", "#F424", "#F425", "#F426", "#F427", "#F428", "#F429", "#F430", "#F431", "#F432", "#F433", "#F434", "#F435", "#F436", "#F437", "#F438", "#F439", "#F440", "#F441", "#F442", "#F443", "#F444", "#F445", "#F446", "#F447", "#F448", "#F449", "#F450", "#F451", "#F452", "#F453", "#F454"] },
+            "39. pós exploração": { content: "Ações ações após comprometer um sistema", hashtags: ["#F455", "#F456", "#F457", "#F458", "#F459", "#F460", "#F461", "#F462", "#F463", "#F464", "#F465", "#F466", "#F467", "#F468", "#F469", "#F470", "#F471", "#F472", "#F473", "#F474", "#F475", "#F476", "#F477", "#F478"] },
+            "40. engenharia social": { content: "Técnicas de manipulação para obter informações", hashtags: ["#F479", "#F480", "#F481", "#F482", "#F483", "#F484", "#F485", "#F486", "#F487", "#F488", "#F489"] },
+            "41. bonus introdução pentest wireless": { content: "Conceitos básicos de segurança em redes sem fio", hashtags: ["#F490", "#F491", "#F492", "#F493", "#F494", "#F495", "#F496"] },
+            "42. O Profissional Conduzindo o Pentest": { content: "Ética, legislação e elaboração de relatórios", hashtags: ["#F497", "#F498", "#F499", "#F500", "#F501", "#F502", "#F503", "#F504", "#F505", "#F506", "#F507", "#F508", "#F509", "#F510", "#F511", "#F512", "#F513", "#F514"] },
+            "43. conclusão": { content: "Considerações finais e próximos passos", hashtags: ["#F515", "#F516", "#F517", "#F518"] }
+        };
+
+        let completedHashtags = new Set(JSON.parse(localStorage.getItem(LS_COMPLETED_HASHTAGS_KEY) || '[]'));
+        let revisionsData = JSON.parse(localStorage.getItem(LS_REVISIONS_DATA_KEY) || '{}');
+        let futureStudies = localStorage.getItem(LS_FUTURE_STUDIES_KEY) || '';
+        let notes = localStorage.getItem(LS_NOTES_KEY) || '';
+        let totalHoursSaved = localStorage.getItem(LS_TOTAL_HOURS_KEY) || '';
+        let plannedWeeklyHoursSaved = localStorage.getItem(LS_PLANNED_WEEKLY_HOURS_KEY) || '';
+        let weeklyStudyHours = JSON.parse(localStorage.getItem(LS_WEEKLY_STUDY_HOURS_KEY) || '[]');
+        let allHashtags = Object.values(courseData).map(section => section.hashtags).flat();
+
+        totalHoursInput.value = totalHoursSaved;
+        plannedWeeklyHoursInput.value = plannedWeeklyHoursSaved;
+        notesTextarea.value = notes;
+
+        menuButton.addEventListener('click', () => {
+            mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        function showPage(pageId) {
+            mainPage.classList.remove('active');
+            revisionsPage.classList.remove('active');
+            futureStudiesPage.classList.remove('active');
+            notesPage.classList.remove('active');
+            mobileNav.style.display = 'none';
+
+            if (pageId === 'main') {
+                mainPage.classList.add('active');
+                renderWeeklyStudyHours(); // Ensure weekly study hours are rendered when showing main page
+            } else if (pageId === 'revisions') {
+                revisionsPage.classList.add('active');
+                renderRevisionsTable();
+            } else if (pageId === 'future') {
+                futureStudiesPage.classList.add('active');
+            } else if (pageId === 'notes') {
+                notesPage.classList.add('active');
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedHashtags.size / allHashtags.length) * 100;
+            progressBarFill.style.width = `${progress}%`;
+            progressBarFill.innerText = `${Math.round(progress)}%`;
+        }
+
+        function saveProgress() {
+            localStorage.setItem(LS_COMPLETED_HASHTAGS_KEY, JSON.stringify(Array.from(completedHashtags)));
+        }
+
+        function calculateCompletion() {
+            const totalHours = parseFloat(totalHoursInput.value);
+            const plannedWeeklyHours = parseFloat(plannedWeeklyHoursInput.value);
+
+            if (isNaN(totalHours) || isNaN(plannedWeeklyHours) || plannedWeeklyHours <= 0) {
+                calculationDiv.innerText = "Por favor, insira valores válidos.";
+                return;
+            }
+
+            localStorage.setItem(LS_TOTAL_HOURS_KEY, totalHours.toString());
+            localStorage.setItem(LS_PLANNED_WEEKLY_HOURS_KEY, plannedWeeklyHours.toString());
+
+            const weeksNeeded = totalHours / plannedWeeklyHours;
+            const today = new Date();
+            const completionDate = new Date(today.setDate(today.getDate() + weeksNeeded * 7));
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            calculationDiv.innerText = `Você terminará o curso em aproximadamente ${weeksNeeded.toFixed(1)} semanas.\nData estimada de conclusão: ${completionDate.toLocaleDateString('pt-BR', options)}`;
+        }
+
+        function createConfetti(x, y) {
+            const colors = ['#e74c3c', '#3498db', '#9b59b6', '#e67e22', '#2ecc71', '#f1c40f'];
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = `${x}px`;
+            confetti.style.top = `${y}px`;
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = `${Math.random() * 1 + 1}s`;
+            confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+            confetti.style.rotate = `${Math.random() * 360}deg`;
+            confettiContainer.appendChild(confetti);
+
+            confetti.addEventListener('animationend', () => {
+                confetti.remove();
+            });
+        }
+
+        function renderRevisionsTable() {
+            revisionsTableBody.innerHTML = '';
+
+            for (const sectionTitle in courseData) {
+                const row = revisionsTableBody.insertRow();
+                const cellTitle = row.insertCell();
+                const cellContent = row.insertCell();
+                const cellSeen = row.insertCell();
+                const cellDay1 = row.insertCell();
+                const cellDay7 = row.insertCell();
+                const cellDay15 = row.insertCell();
+                const cellDay30 = row.insertCell();
+                const cellDay60 = row.insertCell();
+                const cellDay90 = row.insertCell();
+                const cellDay120 = row.insertCell();
+                const cellDay150 = row.insertCell();
+                const cellDay180 = row.insertCell();
+
+                cellTitle.textContent = sectionTitle;
+                cellContent.textContent = courseData[sectionTitle].content;
+
+                const seenCheckbox = document.createElement('input');
+                seenCheckbox.type = 'checkbox';
+                seenCheckbox.checked = revisionsData[sectionTitle]?.seen || false;
+                seenCheckbox.addEventListener('change', () => {
+                    if (!revisionsData[sectionTitle]) {
+                        revisionsData[sectionTitle] = {};
+                    }
+                    revisionsData[sectionTitle].seen = seenCheckbox.checked;
+                    saveRevisionsData();
+                });
+                cellSeen.appendChild(seenCheckbox);
+
+                const revisionDays = [1, 7, 15, 30, 60, 90, 120, 150, 180];
+                const cellDays = [cellDay1, cellDay7, cellDay15, cellDay30, cellDay60, cellDay90, cellDay120, cellDay150, cellDay180];
+
+                for (let i = 0; i < revisionDays.length; i++) {
+                    const day = revisionDays[i];
+                    const cell = cellDays[i];
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = revisionsData[sectionTitle]?.[`day${day}`] || false;
+                    checkbox.addEventListener('change', () => {
+                        if (!revisionsData[sectionTitle]) {
+                            revisionsData[sectionTitle] = {};
+                        }
+                        revisionsData[sectionTitle][`day${day}`] = checkbox.checked;
+                        saveRevisionsData();
+                    });
+                    cell.appendChild(checkbox);
+                }
+            }
+        }
+
+        function saveRevisionsData() {
+            localStorage.setItem(LS_REVISIONS_DATA_KEY, JSON.stringify(revisionsData));
+        }
+
+        function saveFutureStudies() {
+            localStorage.setItem(LS_FUTURE_STUDIES_KEY, futureStudiesTextarea.value);
+        }
+
+        function saveNotes() {
+            localStorage.setItem(LS_NOTES_KEY, notesTextarea.value);
+        }
+
+        function scrollToNextIncomplete() {
+            const sections = Array.from(sectionsContainer.children);
+            let found = false;
+            for (const section of sections) {
+                const hashtags = section.querySelectorAll('.hashtag');
+                for (const hashtagElement of hashtags) {
+                    if (!hashtagElement.classList.contains('completed')) {
+                        hashtagElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        found = true;
+                        return;
+                    }
+                }
+            }
+            if (!found) {
+                alert("Parabéns! Você completou todos os tópicos do curso.");
+            }
+        }
+
+        function saveWeeklyStudyHours() {
+            const hours = parseFloat(weeklyHoursInput.value);
+            if (!isNaN(hours) && hours > 0) {
+                const today = new Date();
+                const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                weeklyStudyHours.push({ date: dateKey, hours: hours });
+                localStorage.setItem(LS_WEEKLY_STUDY_HOURS_KEY, JSON.stringify(weeklyStudyHours));
+                weeklyHoursInput.value = ''; // Clear input after saving
+                renderWeeklyStudyHours();
+            } else {
+                alert("Por favor, insira um número válido de horas.");
+            }
+        }
+
+        function renderWeeklyStudyHours() {
+            weeklyStudyHoursTableBody.innerHTML = ''; // Clear the table body
+            weeklyStudyHours.forEach(item => {
+                const row = weeklyStudyHoursTableBody.insertRow();
+                const dateCell = row.insertCell();
+                const hoursCell = row.insertCell();
+                dateCell.textContent = item.date;
+                hoursCell.textContent = item.hours;
+            });
+        }
+
+        for (const sectionTitle in courseData) {
+            const sectionContainer = document.createElement('div');
+            sectionContainer.classList.add('section-container');
+
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = sectionTitle;
+            sectionContainer.appendChild(titleElement);
+
+            const hashtagContainer = document.createElement('div');
+            hashtagContainer.classList.add('hashtag-container');
+
+            courseData[sectionTitle].hashtags.forEach(hashtag => {
+                const hashtagElement = document.createElement('div');
+                hashtagElement.classList.add('hashtag');
+                hashtagElement.textContent = hashtag;
+                hashtagElement.setAttribute('draggable', 'true');
+
+                if (completedHashtags.has(hashtag)) {
+                    hashtagElement.classList.add('completed');
+                }
+
+                hashtagElement.addEventListener('click', () => {
+                    if (!completedHashtags.has(hashtag)) {
+                        completedHashtags.add(hashtag);
+                        hashtagElement.classList.add('completed');
+                        saveProgress();
+                        updateProgress();
+
+                        for (let i = 0; i < 40; i++) {
+                            createConfetti(hashtagElement.offsetLeft + hashtagElement.offsetWidth / 2, hashtagElement.offsetTop + hashtagElement.offsetHeight / 2);
+                        }
+                    } else {
+                        completedHashtags.delete(hashtag);
+                        hashtagElement.classList.remove('completed');
+                        saveProgress();
+                        updateProgress();
+                    }
+                });
+                hashtagContainer.appendChild(hashtagElement);
+            });
+
+            sectionContainer.appendChild(hashtagContainer);
+            sectionsContainer.appendChild(sectionContainer);
+        }
+
+        revisionsData = JSON.parse(localStorage.getItem(LS_REVISIONS_DATA_KEY) || '{}');
+        futureStudiesTextarea.value = localStorage.getItem(LS_FUTURE_STUDIES_KEY) || '';
+
+        futureStudiesTextarea.addEventListener('input', saveFutureStudies);
+        notesTextarea.addEventListener('input', saveNotes);
+
+        goToNextButton.addEventListener('click', scrollToNextIncomplete);
+        goToNextDesktopButton.addEventListener('click', scrollToNextIncomplete);
+
+        updateProgress();
+        renderWeeklyStudyHours(); // Initial rendering of weekly study hours
+        showPage('main');
+    </script>
+</body>
+</html>
