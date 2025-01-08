@@ -1,3 +1,4 @@
+--- START OF FILE index.html ---
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,11 +26,13 @@
 
         nav {
             margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
         }
 
         nav button {
             padding: 10px 15px;
-            margin: 0 5px;
             border: none;
             border-radius: 5px;
             background-color: #555;
@@ -488,6 +491,9 @@
         <button onclick="showPage('future')">Estudos Futuros</button>
         <button onclick="showPage('notes')">Anotações</button>
         <button id="goToNext">Próximo Incompleto</button>
+        <button onclick="exportProgress()">Exportar Progresso</button>
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+        <button onclick="document.getElementById('importFile').click();">Importar Progresso</button>
     </nav>
 
     <nav class="desktop-nav">
@@ -496,6 +502,9 @@
         <button onclick="showPage('future')">Estudos Futuros</button>
         <button onclick="showPage('notes')">Anotações</button>
         <button id="goToNextDesktop">Próximo Incompleto</button>
+        <button onclick="exportProgress()">Exportar Progresso</button>
+        <input type="file" id="importFileDesktop" accept=".json" style="display: none;">
+        <button onclick="document.getElementById('importFileDesktop').click();">Importar Progresso</button>
     </nav>
 
     <div id="mainPage" class="page active">
@@ -610,6 +619,8 @@
         const weeklyHoursInput = document.getElementById('weeklyHoursInput');
         const weeklyStudyHoursTableBody = document.getElementById('weeklyStudyHoursTable').querySelector('tbody');
         const saveDateButton = document.querySelector('.save-date-button');
+        const importFile = document.getElementById('importFile');
+        const importFileDesktop = document.getElementById('importFileDesktop');
 
         const LS_COMPLETED_HASHTAGS_KEY = 'completedHashtags';
         const LS_REVISIONS_DATA_KEY = 'revisionsData';
@@ -931,51 +942,155 @@
             });
         }
 
-        for (const sectionTitle in courseData) {
-            const sectionContainer = document.createElement('div');
-            sectionContainer.classList.add('section-container');
-
-            const titleElement = document.createElement('h2');
-            titleElement.textContent = sectionTitle;
-            sectionContainer.appendChild(titleElement);
-
-            const hashtagContainer = document.createElement('div');
-            hashtagContainer.classList.add('hashtag-container');
-
-            courseData[sectionTitle].hashtags.forEach(hashtag => {
-                const hashtagElement = document.createElement('div');
-                hashtagElement.classList.add('hashtag');
-                hashtagElement.textContent = hashtag;
-                hashtagElement.setAttribute('draggable', 'true');
-
-                if (completedHashtags.has(hashtag)) {
-                    hashtagElement.classList.add('completed');
-                }
-
-                hashtagElement.addEventListener('click', () => {
-                    if (!completedHashtags.has(hashtag)) {
-                        completedHashtags.add(hashtag);
-                        hashtagElement.classList.add('completed');
-                        saveProgress();
-                        updateProgress();
-
-                        for (let i = 0; i < 40; i++) {
-                            createConfetti(hashtagElement.offsetLeft + hashtagElement.offsetWidth / 2, hashtagElement.offsetTop + hashtagElement.offsetHeight / 2);
-                        }
-                    } else {
-                        completedHashtags.delete(hashtag);
-                        hashtagElement.classList.remove('completed');
-                        saveProgress();
-                        updateProgress();
-                    }
-                });
-                hashtagContainer.appendChild(hashtagElement);
-            });
-
-            sectionContainer.appendChild(hashtagContainer);
-            sectionsContainer.appendChild(sectionContainer);
+        function exportProgress() {
+            const data = {
+                completedHashtags: Array.from(completedHashtags),
+                revisionsData: revisionsData,
+                futureStudies: futureStudies,
+                notes: notes,
+                totalHours: totalHoursInput.value,
+                plannedWeeklyHours: plannedWeeklyHoursInput.value,
+                weeklyStudyHours: weeklyStudyHours,
+                savedCompletionDate: localStorage.getItem(LS_SAVED_COMPLETION_DATE_KEY)
+            };
+            const jsonString = JSON.stringify(data);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'progresso-curso.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
+        importFile.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        loadProgress(data);
+                        alert('Progresso importado com sucesso!');
+                    } catch (error) {
+                        console.error('Erro ao importar o progresso:', error);
+                        alert('Erro ao importar o progresso. Verifique o arquivo.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        importFileDesktop.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        loadProgress(data);
+                        alert('Progresso importado com sucesso!');
+                    } catch (error) {
+                        console.error('Erro ao importar o progresso:', error);
+                        alert('Erro ao importar o progresso. Verifique o arquivo.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function loadProgress(data) {
+            completedHashtags = new Set(data.completedHashtags);
+            revisionsData = data.revisionsData;
+            futureStudies = data.futureStudies;
+            notes = data.notes;
+            totalHoursInput.value = data.totalHours;
+            plannedWeeklyHoursInput.value = data.plannedWeeklyHours;
+            weeklyStudyHours = data.weeklyStudyHours;
+            if (data.savedCompletionDate) {
+                localStorage.setItem(LS_SAVED_COMPLETION_DATE_KEY, data.savedCompletionDate);
+                savedCompletionDate = data.savedCompletionDate;
+                const savedDate = new Date(savedCompletionDate);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                calculationDiv.innerHTML = `<p>Data de Término Fixada: ${savedDate.toLocaleDateString('pt-BR', options)}</p>
+                                             <div class="saved-date-actions fade-in">
+                                                 <button onclick="editSavedDate()">Editar</button>
+                                                 <button onclick="deleteSavedDate()">Excluir</button>
+                                             </div>`;
+            } else {
+                localStorage.removeItem(LS_SAVED_COMPLETION_DATE_KEY);
+                savedCompletionDate = null;
+                calculationDiv.innerHTML = '';
+                saveDateButton.style.display = 'block';
+            }
+
+            localStorage.setItem(LS_COMPLETED_HASHTAGS_KEY, JSON.stringify(Array.from(completedHashtags)));
+            localStorage.setItem(LS_REVISIONS_DATA_KEY, JSON.stringify(revisionsData));
+            localStorage.setItem(LS_FUTURE_STUDIES_KEY, futureStudies);
+            localStorage.setItem(LS_NOTES_KEY, notes);
+            localStorage.setItem(LS_TOTAL_HOURS_KEY, data.totalHours);
+            localStorage.setItem(LS_PLANNED_WEEKLY_HOURS_KEY, data.plannedWeeklyHours);
+            localStorage.setItem(LS_WEEKLY_STUDY_HOURS_KEY, JSON.stringify(weeklyStudyHours));
+
+            renderSections();
+            renderRevisionsTable();
+            renderWeeklyStudyHours();
+            updateProgress();
+            futureStudiesTextarea.value = futureStudies;
+            notesTextarea.value = notes;
+        }
+
+        function renderSections() {
+            sectionsContainer.innerHTML = '';
+            for (const sectionTitle in courseData) {
+                const sectionContainer = document.createElement('div');
+                sectionContainer.classList.add('section-container');
+
+                const titleElement = document.createElement('h2');
+                titleElement.textContent = sectionTitle;
+                sectionContainer.appendChild(titleElement);
+
+                const hashtagContainer = document.createElement('div');
+                hashtagContainer.classList.add('hashtag-container');
+
+                courseData[sectionTitle].hashtags.forEach(hashtag => {
+                    const hashtagElement = document.createElement('div');
+                    hashtagElement.classList.add('hashtag');
+                    hashtagElement.textContent = hashtag;
+                    hashtagElement.setAttribute('draggable', 'true');
+
+                    if (completedHashtags.has(hashtag)) {
+                        hashtagElement.classList.add('completed');
+                    }
+
+                    hashtagElement.addEventListener('click', () => {
+                        if (!completedHashtags.has(hashtag)) {
+                            completedHashtags.add(hashtag);
+                            hashtagElement.classList.add('completed');
+                            saveProgress();
+                            updateProgress();
+
+                            for (let i = 0; i < 40; i++) {
+                                createConfetti(hashtagElement.offsetLeft + hashtagElement.offsetWidth / 2, hashtagElement.offsetTop + hashtagElement.offsetHeight / 2);
+                            }
+                        } else {
+                            completedHashtags.delete(hashtag);
+                            hashtagElement.classList.remove('completed');
+                            saveProgress();
+                            updateProgress();
+                        }
+                    });
+                    hashtagContainer.appendChild(hashtagElement);
+                });
+
+                sectionContainer.appendChild(hashtagContainer);
+                sectionsContainer.appendChild(sectionContainer);
+            }
+        }
+
+        renderSections();
         revisionsData = JSON.parse(localStorage.getItem(LS_REVISIONS_DATA_KEY) || '{}');
         futureStudiesTextarea.value = localStorage.getItem(LS_FUTURE_STUDIES_KEY) || '';
 
