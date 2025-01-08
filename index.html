@@ -1,3 +1,4 @@
+--- START OF FILE index.html ---
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,6 +20,8 @@
 
         h1, h2 {
             color: #ddd;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         nav {
@@ -46,44 +49,59 @@
             display: none;
             flex-direction: column;
             align-items: flex-start;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 30px; /* Increased padding */
+            border-radius: 12px; /* More rounded corners */
             background-color: #222;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow */
             box-sizing: border-box;
+            margin-bottom: 30px; /* Increased bottom margin */
         }
 
         .page.active {
             display: flex;
+            animation: fadeInPage 0.5s ease-out forwards; /* Fade-in animation for pages */
+        }
+
+        @keyframes fadeInPage {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-container {
             width: 100%;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 5px;
+            margin-bottom: 25px; /* Increased margin */
+            padding: 20px; /* Increased padding */
+            border-radius: 8px;
             background-color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .hashtag-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Wider hashtags */
+            gap: 10px; /* Increased gap */
+            margin-top: 15px;
         }
 
         .hashtag {
             background-color: #444;
             border: 1px solid #666;
-            padding: 10px 15px;
+            padding: 12px 18px; /* Increased padding */
             text-align: center;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Added transform */
         }
 
         .hashtag:hover {
             background-color: #666;
+            transform: scale(1.05); /* Slight scale on hover */
         }
 
         .hashtag.completed {
@@ -95,24 +113,33 @@
 
         .progress-container {
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* Increased margin */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .progress-label {
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
         .progress-bar {
             background-color: #555;
-            border-radius: 5px;
-            height: 25px;
+            border-radius: 8px; /* More rounded */
+            height: 30px; /* Increased height */
             overflow: hidden;
+            width: 100%;
         }
 
         .progress-bar-fill {
             background-color: #00bcd4;
             height: 100%;
             width: 0%;
-            transition: width 0.5s ease-in-out;
-            border-radius: 5px;
+            transition: width 0.8s ease-in-out; /* Smoother transition */
+            border-radius: 8px; /* Matches progress bar */
             text-align: center;
-            line-height: 25px;
+            line-height: 30px; /* Matches progress bar height */
             color: #181818;
             font-weight: bold;
         }
@@ -128,8 +155,8 @@
 
         .confetti {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px; /* Slightly larger confetti */
+            height: 10px;
             border-radius: 50%;
             opacity: 0;
             animation: confetti-fall linear forwards;
@@ -144,68 +171,157 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(720deg);
+                transform: translateY(110vh) rotate(720deg);
                 opacity: 0;
             }
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
         input[type="number"] {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #777;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             background-color: #444;
             color: #f0f0f0;
-            width: 100%;
+            width: calc(100% - 24px); /* Adjust for padding and border */
             box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #00bcd4;
+            outline: none;
         }
 
         #calculation {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 20px;
+            padding: 20px;
             background-color: #333;
-            border-radius: 5px;
-            white-space: pre-line; /* To respect line breaks */
+            border-radius: 12px;
+            white-space: pre-line;
+            position: relative;
+            overflow: hidden; /* To contain pseudo-element */
+            transition: transform 0.3s ease; /* Added transition */
+            transform: translateX(-20px); /* Move to the left */
+            opacity: 0.9;
+        }
+
+        #calculation:hover {
+            transform: translateX(-10px); /* Move slightly more on hover */
+            opacity: 1;
+        }
+
+        #calculation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 188, 212, 0.1); /* Subtle overlay */
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        #calculation p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        #calculation .saved-date-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+        }
+
+        #calculation .saved-date-actions button {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 0.9em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        #calculation .saved-date-actions button:hover {
+            color: #f0f0f0;
+            transform: scale(1.1);
+        }
+
+        .save-date-button {
+            background-color: #00bcd4;
+            color: #181818;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .save-date-button:hover {
+            background-color: #0097a7;
+            transform: scale(1.05);
         }
 
         /* Styles for the revision page */
         #revisionsTable {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden; /* To contain the border-radius for the header */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         #revisionsTable th, #revisionsTable td {
             border: 1px solid #555;
-            padding: 8px;
+            padding: 12px 8px;
             text-align: left;
+            background-color: #333; /* Default background */
         }
 
         #revisionsTable th {
             background-color: #444;
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        #revisionsTable tbody tr:nth-child(even) td {
+            background-color: #3a3a3a; /* Slightly different background for even rows */
         }
 
         #revisionsTable input[type="checkbox"] {
             margin: 0;
+            cursor: pointer;
         }
 
         /* Styles for the future studies page */
         #futureStudiesTextarea {
-            width: 100%;
+            width: calc(100% - 20px);
             box-sizing: border-box;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
             border: 1px solid #777;
             background-color: #444;
             color: #f0f0f0;
-            height: 150px;
+            height: 180px;
             resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        #futureStudiesTextarea:focus {
+            border-color: #00bcd4;
+            outline: none;
         }
 
         /* Mobile Menu Button */
@@ -214,41 +330,52 @@
             background-color: #555;
             color: #f0f0f0;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #menuButton:hover {
+            background-color: #777;
+            transform: scale(1.05);
         }
 
         /* Mobile Navigation */
         .mobile-nav {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             width: 100%;
         }
 
+        .mobile-nav button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
         /* Media query for mobile view */
         @media (max-width: 768px) {
-            nav {
+            nav.desktop-nav {
                 display: none; /* Hide the regular nav */
             }
             #menuButton {
                 display: block; /* Show the menu button */
             }
             .mobile-nav {
-                display: flex; /* Show the mobile nav when menu is open */
+                display: none; /* Initially hidden */
             }
             .page {
-                padding: 10px;
+                padding: 20px;
             }
             .hashtag-container {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
         }
 
         .zimatise-info {
-            margin-top: 30px;
+            margin-top: 40px;
             text-align: center;
             font-size: 0.9em;
             color: #aaa;
@@ -256,51 +383,99 @@
 
         /* Styles for the notes page */
         #notesTextarea {
-            width: 100%;
+            width: calc(100% - 20px);
             box-sizing: border-box;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
             border: 1px solid #777;
             background-color: #444;
             color: #f0f0f0;
-            height: 300px;
+            height: 350px;
             resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        #notesTextarea:focus {
+            border-color: #00bcd4;
+            outline: none;
         }
 
         /* Styles for weekly study hours */
         .weekly-study-container {
-            margin-top: 20px;
+            margin-top: 30px;
             background-color: #333;
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 8px;
             width: 100%;
             box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .weekly-study-container h3 {
             margin-top: 0;
             color: #ddd;
+            margin-bottom: 15px;
         }
 
         #weeklyHoursInput {
-            width: calc(100% - 22px); /* Adjust for padding and border */
+            width: calc(100% - 24px); /* Adjust for padding and border */
+            padding: 12px;
+            border: 1px solid #777;
+            border-radius: 8px;
+            background-color: #444;
+            color: #f0f0f0;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        #weeklyHoursInput:focus {
+            border-color: #00bcd4;
+            outline: none;
         }
 
         #weeklyStudyHoursTable {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         #weeklyStudyHoursTable th, #weeklyStudyHoursTable td {
             border: 1px solid #555;
-            padding: 8px;
+            padding: 10px 8px;
             text-align: left;
+            background-color: #333;
         }
 
         #weeklyStudyHoursTable th {
             background-color: #444;
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        #weeklyStudyHoursTable tbody tr:nth-child(even) td {
+            background-color: #3a3a3a;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
     </style>
 </head>
@@ -325,6 +500,13 @@
     </nav>
 
     <div id="mainPage" class="page active">
+        <div class="progress-container">
+            <h2 class="progress-label">Progresso Geral do Curso</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBarFill">0%</div>
+            </div>
+        </div>
+
         <label for="totalHours">Carga Horária Total do Curso:</label>
         <input type="number" id="totalHours" placeholder="Ex: 40">
 
@@ -333,13 +515,10 @@
 
         <button onclick="calculateCompletion()">Calcular Término</button>
 
-        <div id="calculation"></div>
-
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-bar-fill" id="progressBarFill">0%</div>
-            </div>
+        <div id="calculation">
+            <!-- Saved date will be displayed here -->
         </div>
+        <button class="save-date-button" onclick="saveCalculatedDate()" style="display: none;">Fixar Data de Término</button>
 
         <div class="weekly-study-container">
             <h3>Registro de Horas de Estudo Semanais</h3>
@@ -431,6 +610,7 @@
         const goToNextDesktopButton = document.getElementById('goToNextDesktop');
         const weeklyHoursInput = document.getElementById('weeklyHoursInput');
         const weeklyStudyHoursTableBody = document.getElementById('weeklyStudyHoursTable').querySelector('tbody');
+        const saveDateButton = document.querySelector('.save-date-button');
 
         const LS_COMPLETED_HASHTAGS_KEY = 'completedHashtags';
         const LS_REVISIONS_DATA_KEY = 'revisionsData';
@@ -439,6 +619,7 @@
         const LS_TOTAL_HOURS_KEY = 'totalHours';
         const LS_PLANNED_WEEKLY_HOURS_KEY = 'plannedWeeklyHours';
         const LS_WEEKLY_STUDY_HOURS_KEY = 'weeklyStudyHours';
+        const LS_SAVED_COMPLETION_DATE_KEY = 'savedCompletionDate';
 
         const courseData = {
             "1. avisos legais": { content: "Informações legais importantes", hashtags: ["#F001", "#F002"] },
@@ -468,7 +649,7 @@
             "25. analise de vulnerabilidade": { content: "Identificação de falhas de segurança em sistemas", hashtags: ["#F249", "#F250", "#F251", "#F252", "#F253", "#F254", "#F255", "#F256", "#F257", "#F258", "#F259", "#F260", "#F261", "#F262", "#F263", "#F264", "#F265", "#F266"] },
             "26. Metasploit Framework": { content: "Utilização do Metasploit para exploração", hashtags: ["#F267", "#F268", "#F269", "#F270", "#F271", "#F272", "#F273", "#F274", "#F275", "#F276", "#F277", "#F278", "#F279"] },
             "27. Hashes e senhas - linux": { content: "Quebra e gerenciamento de senhas no Linux", hashtags: ["#F280", "#F281", "#F282", "#F283", "#F284", "#F285", "#F286", "#F287", "#F288", "#F289", "#F290", "#F291", "#F292", "#F293"] },
-            "28. Hashes e senhas - windows": { content: "Quebra e gerenciamento de senhas no Windows", hashtags: ["#F294", "#F295", "#F296", "#F297", "#F298", "#F299", "#F300", "#F301", "#F302", "#F303", "#F304", "#F305"] },
+            "28. Hashes e senhas - windows": { content: "Quebra e gerenciamento de senhas no Windows", hashtags: ["#F294", "#F295", "#F296", "#F297", "#F298", "##F299", "#F300", "#F301", "#F302", "#F303", "#F304", "#F305"] },
             "29. Pentest Interno - Do zero a domain admin": { content: "Técnicas de escalada de privilégios em redes Windows", hashtags: ["#F306", "#F307", "#F308", "#F309", "#F310", "#F311", "#F312", "#F313", "#F314"] },
             "30. Brute force ataques em senhas": { content: "Ataques de força bruta e dicionário contra senhas", hashtags: ["#F315", "#F316", "#F317", "#F318", "#F319", "#F320", "#F321", "#F322", "#F323", "#F324", "#F325", "#F326", "#F327"] },
             "31. DEV Exploitation Assembly para pentesters - windows": { content: "Conceitos de Assembly para análise de exploits no Windows", hashtags: ["#F328", "#F329", "#F330", "#F331", "#F332", "#F333", "#F334", "#F335", "#F336", "#F337", "#F338", "#F339"] },
@@ -493,11 +674,23 @@
         let totalHoursSaved = localStorage.getItem(LS_TOTAL_HOURS_KEY) || '';
         let plannedWeeklyHoursSaved = localStorage.getItem(LS_PLANNED_WEEKLY_HOURS_KEY) || '';
         let weeklyStudyHours = JSON.parse(localStorage.getItem(LS_WEEKLY_STUDY_HOURS_KEY) || '[]');
+        let savedCompletionDate = localStorage.getItem(LS_SAVED_COMPLETION_DATE_KEY);
         let allHashtags = Object.values(courseData).map(section => section.hashtags).flat();
 
         totalHoursInput.value = totalHoursSaved;
         plannedWeeklyHoursInput.value = plannedWeeklyHoursSaved;
         notesTextarea.value = notes;
+
+        // Initialize saved completion date display
+        if (savedCompletionDate) {
+            const savedDate = new Date(savedCompletionDate);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            calculationDiv.innerHTML = `<p>Data de Término Fixada: ${savedDate.toLocaleDateString('pt-BR', options)}</p>
+                                         <div class="saved-date-actions fade-in">
+                                             <button onclick="editSavedDate()">Editar</button>
+                                             <button onclick="deleteSavedDate()">Excluir</button>
+                                         </div>`;
+        }
 
         menuButton.addEventListener('click', () => {
             mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
@@ -512,7 +705,7 @@
 
             if (pageId === 'main') {
                 mainPage.classList.add('active');
-                renderWeeklyStudyHours(); // Ensure weekly study hours are rendered when showing main page
+                renderWeeklyStudyHours();
             } else if (pageId === 'revisions') {
                 revisionsPage.classList.add('active');
                 renderRevisionsTable();
@@ -533,12 +726,15 @@
             localStorage.setItem(LS_COMPLETED_HASHTAGS_KEY, JSON.stringify(Array.from(completedHashtags)));
         }
 
+        let calculatedCompletionDate = null;
+
         function calculateCompletion() {
             const totalHours = parseFloat(totalHoursInput.value);
             const plannedWeeklyHours = parseFloat(plannedWeeklyHoursInput.value);
 
             if (isNaN(totalHours) || isNaN(plannedWeeklyHours) || plannedWeeklyHours <= 0) {
                 calculationDiv.innerText = "Por favor, insira valores válidos.";
+                saveDateButton.style.display = 'none';
                 return;
             }
 
@@ -547,10 +743,67 @@
 
             const weeksNeeded = totalHours / plannedWeeklyHours;
             const today = new Date();
-            const completionDate = new Date(today.setDate(today.getDate() + weeksNeeded * 7));
+            calculatedCompletionDate = new Date(today.setDate(today.getDate() + weeksNeeded * 7));
 
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            calculationDiv.innerText = `Você terminará o curso em aproximadamente ${weeksNeeded.toFixed(1)} semanas.\nData estimada de conclusão: ${completionDate.toLocaleDateString('pt-BR', options)}`;
+            calculationDiv.innerHTML = `<p>Você terminará o curso em aproximadamente ${weeksNeeded.toFixed(1)} semanas.</p>
+                                         <p>Data estimada de conclusão: ${calculatedCompletionDate.toLocaleDateString('pt-BR', options)}</p>`;
+            saveDateButton.style.display = 'block';
+        }
+
+        function saveCalculatedDate() {
+            if (calculatedCompletionDate) {
+                localStorage.setItem(LS_SAVED_COMPLETION_DATE_KEY, calculatedCompletionDate.toISOString());
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                calculationDiv.innerHTML = `<p class="fade-in">Data de Término Fixada: ${calculatedCompletionDate.toLocaleDateString('pt-BR', options)}</p>
+                                             <div class="saved-date-actions fade-in">
+                                                 <button onclick="editSavedDate()">Editar</button>
+                                                 <button onclick="deleteSavedDate()">Excluir</button>
+                                             </div>`;
+                saveDateButton.style.display = 'none';
+            }
+        }
+
+        function editSavedDate() {
+            const currentDate = new Date(localStorage.getItem(LS_SAVED_COMPLETION_DATE_KEY));
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+
+            calculationDiv.innerHTML = `<input type="date" id="editDate" value="${year}-${month}-${day}">
+                                         <button onclick="updateSavedDate()">Salvar</button>
+                                         <button onclick="cancelEditDate()">Cancelar</button>`;
+        }
+
+        function updateSavedDate() {
+            const newDateInput = document.getElementById('editDate').value;
+            if (newDateInput) {
+                localStorage.setItem(LS_SAVED_COMPLETION_DATE_KEY, newDateInput);
+                const updatedDate = new Date(newDateInput);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                calculationDiv.innerHTML = `<p class="fade-in">Data de Término Fixada: ${updatedDate.toLocaleDateString('pt-BR', options)}</p>
+                                             <div class="saved-date-actions fade-in">
+                                                 <button onclick="editSavedDate()">Editar</button>
+                                                 <button onclick="deleteSavedDate()">Excluir</button>
+                                             </div>`;
+            }
+        }
+
+        function cancelEditDate() {
+            const savedDate = new Date(localStorage.getItem(LS_SAVED_COMPLETION_DATE_KEY));
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            calculationDiv.innerHTML = `<p class="fade-in">Data de Término Fixada: ${savedDate.toLocaleDateString('pt-BR', options)}</p>
+                                         <div class="saved-date-actions fade-in">
+                                             <button onclick="editSavedDate()">Editar</button>
+                                             <button onclick="deleteSavedDate()">Excluir</button>
+                                         </div>`;
+        }
+
+        function deleteSavedDate() {
+            localStorage.removeItem(LS_SAVED_COMPLETION_DATE_KEY);
+            calculationDiv.innerHTML = '';
+            saveDateButton.style.display = 'block';
+            calculateCompletion(); // Recalculate and show the button again
         }
 
         function createConfetti(x, y) {
@@ -661,7 +914,7 @@
                 const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
                 weeklyStudyHours.push({ date: dateKey, hours: hours });
                 localStorage.setItem(LS_WEEKLY_STUDY_HOURS_KEY, JSON.stringify(weeklyStudyHours));
-                weeklyHoursInput.value = ''; // Clear input after saving
+                weeklyHoursInput.value = '';
                 renderWeeklyStudyHours();
             } else {
                 alert("Por favor, insira um número válido de horas.");
@@ -669,7 +922,7 @@
         }
 
         function renderWeeklyStudyHours() {
-            weeklyStudyHoursTableBody.innerHTML = ''; // Clear the table body
+            weeklyStudyHoursTableBody.innerHTML = '';
             weeklyStudyHours.forEach(item => {
                 const row = weeklyStudyHoursTableBody.insertRow();
                 const dateCell = row.insertCell();
@@ -734,7 +987,7 @@
         goToNextDesktopButton.addEventListener('click', scrollToNextIncomplete);
 
         updateProgress();
-        renderWeeklyStudyHours(); // Initial rendering of weekly study hours
+        renderWeeklyStudyHours();
         showPage('main');
     </script>
 </body>
